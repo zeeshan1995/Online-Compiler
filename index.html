@@ -3,6 +3,7 @@
         <script src="/socket.io/socket.io.js"></script>
         <script src="http://code.jquery.com/jquery-latest.min.js"></script>
         
+        
         <script>
             
             var socket=io();
@@ -15,6 +16,12 @@
                //     alert("Hello");
                     socket.emit('compile',$("#code").val());
                 })
+                
+                $("#roomf").submit(function(e){
+                    e.preventDefault();
+                 //   alert("Hello")
+                    socket.emit('join_room',$("#room_name").val());
+                })
             });
             
             //Receiving
@@ -25,18 +32,51 @@
             
             socket.on('edited',function(code){
                 $("#code").val(code);
+             //   alert(code);
             })
+            
+            socket.on("room_name",function(name){
+                $("#codeId").html('Your CodeId: '+'<b>'+ name+'<b>')
+                $("#roomf").hide();
+                $("#room").hide();
+                $("#main").show();
+            })
+            function new_room(){
+                socket.emit('new_room',null);
+            }
         </script>
+        
+        <style>
+            .hidethis{
+                display: none;
+            }
+        </style>
     </head>
     
     <body>
-        <div class="container" style="margin-top:1%;">
+       
+       <div id="room" style="margin-top:10%;margin-left:30%">
+        
+           <button type="button" onclick="new_room()"><b>Write New Code</b></button>
+           <button type="button" onclick="$('#roomf').show()"><b>Edit Another's Code</b></button>
+           
+           <br><br>
+           
+           <form id="roomf" class="hidethis">
+               <b>CodeId:</b> <input id="room_name" autocomplete="off">
+               <input type="submit" value="Join Others">
+           </form>
+           
+       </div>
+        <div id="main" class="hidethis" class="container" style="margin-top:1%;">
+           
+           <p id="codeId" style="margin-left:30%"></p>
             <div class="row" style="width:100%;">
                
                 <div class="col-xs-6" style="background-color:green; width:75%;height:75%;float:left">
                     
                      <form id="prog" name="prog"> 
-                        <textarea name="code" id="code" style="width:100%;height:100% ;background-color:#f0f0f0;resize:none" oninput="send()"></textarea>
+                        <textarea name="code" id="code" style="width:100%;height:100% ;background-color:#f0f0f0;resize:none" oninput="send()" spellcheck="false"></textarea>
                         <input type="submit" name="button" id="button" value="Compile"/>
                     </form>
                     <script>
