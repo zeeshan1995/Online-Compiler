@@ -1,0 +1,31 @@
+
+
+Server:
+	- GET method
+		- to serve general purpose resources  (HTML, CSS, JS, TEXT, IMAGES, etc)
+	- POST method
+		- RPC (remote procedure call) API 
+			- request format 
+				{
+					username    : string,
+					language    : string,
+					client_time : string (UTC ISO Format),
+					code        : string,
+					project_id  : string,
+					input       : string,
+					action      : string (run|build)
+				}
+			- response format
+	- WebSocket
+		- collaboration
+			- message broadcast
+			- 
+
+
+Client (UI):
+	- look and feel : HTML + CSS + JS
+	- behaviour     : JS
+		- dynamic UI
+		- server calls
+		 	- dynamic UI
+	

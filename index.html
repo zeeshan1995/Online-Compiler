@@ -14,12 +14,11 @@
                 //Sending
                 $("#prog").submit(function(e){
                     e.preventDefault();
-                    socket.emit('compile',$("#code").val(),$("#input").val());
-                })
-                
-                $("#roomf").submit(function(e){
-                    e.preventDefault();
-                    socket.emit('join_room',$("#room_name").val());
+                    var code=$("#code").val(),input = $("#input").val(), projectID=socket.projectID;
+                    var msg=""
+                    $.post("/compile",{code : code, input : input, projectID : projectID},function(compile_msg){
+                        socket.emit('compile_msg',compile_msg);
+                    });
                 })
             });
             
@@ -32,7 +31,7 @@
                 $("#code").val(code);
             })
             
-            socket.on("room_name",function(name){
+            socket.on("projectID",function(name){
                 window.location.href=name;
             })
             
@@ -66,7 +65,7 @@
         <script>
                 var url=window.location.href;
                 if(url=="http://localhost:8000/"){
-                    $("#room").show();
+                    ;
                 }
                 else{
 					  var name= prompt("Enter your name: ");
