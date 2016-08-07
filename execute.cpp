@@ -17,9 +17,9 @@ int main(int argc,char* argv[]){
 //	for(int i=0;i< argc;i++)
 //		std::cout<<i<<" argument: "<<argv[i]<<"\n";;
 	int p[2];
-	
-	int ff=open(argv[3],O_RDONLY);
-	std::ifstream file(argv[3]);
+
+	int ff=open(argv[argc - 1],O_RDONLY);
+	std::ifstream file(argv[argc -1]);
 	
 	if ( pipe(p) == -1 ) {
 		std::cout << "pipe failed" << std::endl;
@@ -30,7 +30,10 @@ int main(int argc,char* argv[]){
 	if(!pid) {
 		dup2(p[STDIN],0);
 		close(p[STDOUT]);
-		execl(argv[1], argv[2],NULL);
+		if(argc == 4)
+			execl(argv[1], argv[2],NULL);
+		else
+			execl(argv[1], argv[2],argv[3],NULL);
 	} else {
 		dup2(ff,0);
 		std::string str;

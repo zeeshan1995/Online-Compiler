@@ -14,9 +14,13 @@
                 //Sending
                 $("#prog").submit(function(e){
                     e.preventDefault();
-                    var code=$("#code").val(),input = $("#input").val(), projectID=socket.projectID;
-                    var msg=""
-                    $.post("/compile",{code : code, input : input, projectID : projectID},function(compile_msg){
+                    var code=$("#code").val(),input = $("#input").val(),lang = $('#lang').val();
+                    var body = {
+                        code : code, 
+                        input : input,
+                        lang : lang
+                    };
+                    $.post("/compile", body ,function(compile_msg){
                         socket.emit('compile_msg',compile_msg);
                     });
                 })
@@ -86,6 +90,10 @@
                     
                      <form id="prog" name="prog"> 
                         <textarea name="code" id="code" oninput="send()" spellcheck="false" autofocus></textarea>
+                         <select id ="lang">
+                             <option name = "cpp">c++</option>
+                             <option name ="python">python</option>
+                         </select>
                         <input type="submit" name="button" id="button" value="Compile"/>
                         <input type="checkbox" onclick="$('#input').toggle()">Input <textarea  class="hidethis" name="input" id="input" cols="20" rows="3"></textarea>
                     </form>
